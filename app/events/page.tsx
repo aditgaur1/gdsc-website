@@ -1,10 +1,43 @@
+'use client';
+
+import { useState, useMemo } from 'react';
 import { EventCard, FilterBar, PageHero } from '@/app/components/events';
 import eventsData from '@/data/events.json';
 
 export default function EventsPage() {
-  // Sample event data - replace with actual data fetching later
-  const events = eventsData.events;
+  // Filter state
+  const [searchQuery, setSearchQuery] = useState('');
+  const [locationFilter, setLocationFilter] = useState('');
+  const [eventTypeFilter, setEventTypeFilter] = useState('');
 
+  // Get all events from JSON
+  const allEvents = eventsData.events;
+
+  // Filter events based on search query, location, and event type
+  const filteredEvents = useMemo(() => {
+    return allEvents.filter((event) => {
+      // Search filter - matches title, description, or location
+      const searchLower = searchQuery.toLowerCase();
+      const matchesSearch = searchQuery === '' || 
+        event.title.toLowerCase().includes(searchLower) ||
+        event.description.toLowerCase().includes(searchLower) ||
+        event.location.toLowerCase().includes(searchLower);
+
+      // Location filter
+      const matchesLocation = locationFilter === '' || 
+        event.location === locationFilter;
+
+      // Event type filter
+      const matchesEventType = eventTypeFilter === '' || 
+        event.eventType === eventTypeFilter;
+
+      return matchesSearch && matchesLocation && matchesEventType;
+    });
+  }, [allEvents, searchQuery, locationFilter, eventTypeFilter]);
+
+  // Get unique locations and event types for dropdown options
+  const locationOptions = [...new Set(allEvents.map(e => e.location))];
+  const eventTypeOptions = [...new Set(allEvents.map(e => e.eventType))];
 
   return (
     <div className="min-h-screen bg-[var(--color-background-light-gray)]">
@@ -16,8 +49,14 @@ export default function EventsPage() {
         {/* Filter Section */}
         <div className="mb-10">
           <FilterBar
-            locationOptions={['Main Auditorium', 'Conference Hall', 'Online']}
-            eventTypeOptions={['Workshop', 'Seminar', 'Hackathon', 'Meetup']}
+            searchValue={searchQuery}
+            onSearchChange={setSearchQuery}
+            locationValue={locationFilter}
+            onLocationChange={setLocationFilter}
+            eventTypeValue={eventTypeFilter}
+            onEventTypeChange={setEventTypeFilter}
+            locationOptions={locationOptions}
+            eventTypeOptions={eventTypeOptions}
           />
         </div>
 
@@ -32,18 +71,24 @@ export default function EventsPage() {
 
         {/* Event Cards */}
         <div className="flex flex-col gap-6">
-          {events.map((event, index) => (
-            <EventCard
-              key={index}
-              image={event.image}
-              time={event.time}
-              date={event.date}
-              title={event.title}
-              description={event.description}
-              location={event.location}
-              socialLinks={event.socialLinks}
-            />
-          ))}
+          {filteredEvents.length > 0 ? (
+            filteredEvents.map((event, index) => (
+              <EventCard
+                key={index}
+                image={event.image}
+                time={event.time}
+                date={event.date}
+                title={event.title}
+                description={event.description}
+                location={event.location}
+                socialLinks={event.socialLinks}
+              />
+            ))
+          ) : (
+            <div className="py-12 text-center text-lg text-[var(--color-text-gray)]">
+              No events found matching your criteria.
+            </div>
+          )}
         </div>
       </main>
     </div>

@@ -29,7 +29,7 @@ export default function FilterDropdown({
           color: colortext,
         }}
       >
-        <option value="" disabled>
+        <option value="">
           {label}
         </option>
         {options.map((option) => (

@@ -5,6 +5,7 @@ export interface Event {
   title: string;
   description: string;
   location: string;
+  eventType: string;
   socialLinks?: {
     instagram?: string;
     github?: string;
