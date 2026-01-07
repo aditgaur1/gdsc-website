@@ -104,7 +104,7 @@ const HomeCards = () => {
             alt=""
             width={670}
             height={500}
-            className="hidden xl:block absolute z-1 w-[35vw] right-[10vw] top-[40%] cursor-pointer transition-all duration-300 ease-out hover:right-[9vw]"
+            className="hidden xl:block absolute z-3 w-[35vw] right-[10vw] top-[40%]"
           />
         </div>
 
@@ -183,7 +183,7 @@ const HomeCards = () => {
             transition={{
               type: "spring",
               stiffness: 160,
-              damping: 14,
+              damping: 10,
               mass: 0.9,
               delay: 0.2,
             }}
