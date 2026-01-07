@@ -11,12 +11,12 @@ import Image from "next/image";
 
 const HomeCards = () => {
   const slideLeftVariant = {
-    hidden: { x: -100 },
+    hidden: { x: -200 },
     visible: { x: 0 },
   };
 
   const slideRightVariant = {
-    hidden: { x: 100 },
+    hidden: { x: 200 },
     visible: { x: 0 },
   };
 
@@ -55,7 +55,7 @@ const HomeCards = () => {
             transition={{
               type: "spring",
               stiffness: 160,
-              damping: 14,
+              damping: 16,
               mass: 0.9,
             }}
           >
@@ -119,7 +119,7 @@ const HomeCards = () => {
             transition={{
               type: "spring",
               stiffness: 160,
-              damping: 14,
+              damping: 16,
               mass: 0.9,
               delay: 0.1,
             }}
@@ -183,7 +183,7 @@ const HomeCards = () => {
             transition={{
               type: "spring",
               stiffness: 160,
-              damping: 10,
+              damping: 16,
               mass: 0.9,
               delay: 0.2,
             }}
